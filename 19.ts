@@ -3,8 +3,12 @@ const input = await readInput("19.txt", false);
 
 type Rule = (number[] | string)[];
 
+interface State {}
+
 const rules: Map<number, Rule> = new Map();
 let inputs: string[] = [];
+
+const backtrackStack;
 
 function parseRule(s: string) {
   const r = /^(\d+): (.*)$/.exec(s)!;
@@ -33,9 +37,9 @@ function parseInputs() {
 
 parseInputs();
 
-function fulfillsNumericSubRule(subRule: number[], s: string): false | string {
+function fulfillsNumericSubRule(subRule: number[], s: string, depth: number): false | string {
   for (const ruleIndex of subRule) {
-    const r = execRule(ruleIndex, s);
+    const r = execRule(ruleIndex, s, depth + 1);
     if (r === false) {
       return false;
     }
@@ -44,16 +48,22 @@ function fulfillsNumericSubRule(subRule: number[], s: string): false | string {
   return s;
 }
 
-function execRule(ruleIndex: number, s: string): false | string {
+function execRule(ruleIndex: number, s: string, depth = 0): false | string {
   const rule = rules.get(ruleIndex)!;
-  console.log(ruleIndex, rule, s);
-  for (const subRule of rule) {
+  let prefix = "";
+  for (let i = 0; i < depth; i++) {
+    prefix += " |";
+  }
+  console.log(prefix, ruleIndex, rule, s);
+  const greedyRule = rule.slice();
+  greedyRule.sort((a, b) => b.length - a.length);
+  for (const subRule of greedyRule) {
     if (typeof subRule === "string") {
       if (s.startsWith(subRule)) {
         return s.substring(subRule.length);
       }
     } else {
-      const r = fulfillsNumericSubRule(subRule, s);
+      const r = fulfillsNumericSubRule(subRule, s, depth);
       if (typeof r === "string") {
         return r;
       }
@@ -74,10 +84,12 @@ function part1() {
 function part2() {
   parseRule("8: 42 | 42 8");
   parseRule("11: 42 31 | 42 11 31");
-  inputs.forEach((s) => {
+  console.log(matchesRule(0, "babbbbaabbbbbabbbbbbaabaaabaaa"));
+  Deno.exit(0);
+  /*inputs.forEach((s) => {
     console.log(matchesRule(0, s), s);
     Deno.exit(0);
-  });
+  });*/
   return inputs.filter((s) => matchesRule(0, s)).length;
 }
 

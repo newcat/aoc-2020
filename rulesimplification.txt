@@ -1,0 +1,37 @@
+0: 8 11
+8: 42 | 42 8
+11: 42 31 | 42 11 31
+42:
+  - babbb
+  - baabb
+  - bbaab
+  - bbabb
+  - bbbab
+  - bbbbb
+  - abbbb
+  - aabbb
+  - aaaab
+  - aaabb
+  - aaaba
+  - ababa
+  - bbbba
+  - aaaaa
+  - baaaa
+  - bbaaa
+31:
+  - bbaba
+  - bbbaa
+  - babab
+  - babaa
+  - babba
+  - baaba
+  - baaab
+  - ababb
+  - abaab
+  - abbab
+  - abaaa
+  - abbaa
+  - abbba
+  - aabab
+  - aabaa
+  - aabba
